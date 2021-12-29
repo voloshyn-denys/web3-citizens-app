@@ -1,7 +1,14 @@
 import React from 'react';
+import { getCitizenNote } from '../../redux/reducers/actions';
+import { useAppDispatch } from '../../hooks';
 
 const CitizenCard = ({ citizen, showNote }: any) => {
     const { id, name, age, city } = citizen;
+    const dispatch = useAppDispatch();
+
+    const handleClick = () => {
+        dispatch(getCitizenNote(id));
+    }
 
     return (
         <li>
@@ -10,7 +17,7 @@ const CitizenCard = ({ citizen, showNote }: any) => {
                 Age: {age} <br />
                 City: {city}
             </div>
-            <button onClick={() => {showNote(id)}}>Show note</button>
+            <button onClick={handleClick}>Show note</button>
         </li>
     )
 };

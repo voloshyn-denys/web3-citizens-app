@@ -6,9 +6,9 @@ import {
   Link
 } from "react-router-dom";
 
+
 import Home from './pages/Home/Component';
 import AddCitizen from './pages/AddCitizen/Component';
-
 
 const App = () => {
   return (
