@@ -1,24 +1,40 @@
 import React from 'react';
 
+import Alert from '@mui/material/Alert';
+import List from '@mui/material/List';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+
 import CitizenCard from '../CitizenCard/Component';
 import { useAppSelector } from '../../hooks';
+import './Component.scss'
 
 type Citizen = { id: string, age: string, name: string, city?: string };
 
 const CitizensList = () => {
     const { citizens, pending, error } = useAppSelector((state: any) => state.citizens);
 
-    if (pending) return <div>Loading...</div>;
-    if (error) return <div>Some error happen. Please reload the page.</div>;
+    if (pending) return (
+        <div className='listContainer'>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <CircularProgress />
+            </Box>
+        </div>
+    );
+    if (error) return <Alert severity="error">Some error happen. Please reload the page.</Alert>
 
     return (
-        <ol>
-            {
-                citizens.map((citizen: Citizen) => (
-                    <CitizenCard key={citizen.id} citizen={citizen} />
-                ))
-            }
-        </ol>
+        <div className='listContainer'>
+            <Typography variant="h5" component="div">Citizens List</Typography>
+            <List>
+                {
+                    citizens.map((citizen: Citizen) => (
+                        <CitizenCard key={citizen.id} citizen={citizen} />
+                    ))
+                }
+            </List>
+        </div>
     )
 };
 

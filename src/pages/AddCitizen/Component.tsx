@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Alert from '@mui/material/Alert';
+import Typography from '@mui/material/Typography';
+
 import { validationSchema } from './validation';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { addNewCitizen } from '../../redux/reducers/actions';
 import './Component.scss'
 
 const AddCitizen = () => {
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+    const { account } = useAppSelector((state: any) => state.application);
     const dispatch = useAppDispatch();
     const handleSubmit = (formValues: any, { resetForm }: any) => {
         dispatch(
@@ -31,63 +37,79 @@ const AddCitizen = () => {
     const errors = formik.errors as any;
     const touched = formik.touched as any;
 
+    if (!account) return (
+        <div className='container'>
+            <Alert variant="outlined"severity="info">
+                Please connect to MetaMask.
+            </Alert>
+        </div>
+    );
+
     return (
-        <div>
-            <h1>Add new citizen</h1>
+        <div className='container'>
+            <Typography variant="h5" component="div">Add new citizen</Typography>
             {
                 isFormSubmitted && (
-                    <div>
-                        Please confirm adding new citizen in MetaMask.
-                    </div>
+                    <Alert severity="info">Please confirm adding new citizen in MetaMask.</Alert>
                 )
             }
-            <form onSubmit={formik.handleSubmit}>
-                <div>
-                    <label htmlFor="age">Age</label> {' '}
-                    <input
-                        id="age"
-                        name="age"
-                        type="number"
-                        onChange={formik.handleChange}
-                        value={formik.values.age}
-                    />
-                    { errors.age && touched.age && <div className='error'>{errors.age}</div> }
-                </div>
-                <div>
-                    <label htmlFor="city">City</label>  {' '}
-                    <input
-                        id="city"
-                        name="city"
-                        type="text"
-                        onChange={formik.handleChange}
-                        value={formik.values.city}
-                    />
-                    { errors.city && touched.city && <div className='error'>{errors.city}</div> }
-                </div>
-                <div>
-                    <label htmlFor="name">Name</label>  {' '}
-                    <input
+            <form className='formContainer' onSubmit={formik.handleSubmit}>
+                <div className="textInput">
+                    <TextField
+                        size="small"
+                        fullWidth
                         id="name"
                         name="name"
-                        type="text"
-                        onChange={formik.handleChange}
+                        label="Name"
                         value={formik.values.name}
+                        onChange={formik.handleChange}
+                        error={touched.name && errors.name}
+                        helperText={touched.name && errors.name}
                     />
-                    { errors.name && touched.name && <div className='error'>{errors.name}</div> }
                 </div>
-                <div>
-                    <label htmlFor="note">Some Note</label> {' '}
-                    <input
+                <div className="textInput">
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="age"
+                        name="age"
+                        label="Age"
+                        type="number"
+                        value={formik.values.age}
+                        onChange={formik.handleChange}
+                        error={touched.age && errors.age}
+                        helperText={touched.age && errors.age}
+                    />
+                </div>
+                <div className="textInput">
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="city"
+                        name="city"
+                        label="City"
+                        value={formik.values.city}
+                        onChange={formik.handleChange}
+                        error={touched.city && errors.city}
+                        helperText={touched.city && errors.city}
+                    />
+                </div>
+                <div className="textInput">
+                    <TextField
+                        size="small"
+                        fullWidth
                         id="note"
                         name="note"
-                        type="text"
-                        onChange={formik.handleChange}
+                        label="Note"
                         value={formik.values.note}
+                        onChange={formik.handleChange}
+                        error={touched.note && errors.note}
+                        helperText={touched.note && errors.note}
                     />
-                    { errors.note && touched.note && <div className='error'>{errors.note}</div> }
                 </div>
-
-                <button type="submit">Submit</button>
+                <Button color="primary" variant="contained" fullWidth type="submit">
+                    Submit
+                </Button>
             </form>
         </div>
     );

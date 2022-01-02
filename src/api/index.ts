@@ -9,7 +9,7 @@ const WRONG_FORMAT_MESSAGE = 'Decoded with wrong format.'
 
 const provider = 
     (window as any).ethereum || 
-    (window as any).web3.currentProvider;
+    (window as any).web3?.currentProvider;
 
 const web3 = new Web3(provider);
 const contract = new web3.eth.Contract(CONTACT_ABI as any, CONTACT_ADDRESS);
@@ -69,8 +69,6 @@ export const citizensAPI = {
                 from: (window as any).ethereum.selectedAddress 
             });
         const id = events?.Citizen?.returnValues?.id || uuidv4();
-
-        console.info(id);
 
         return { id, age, name, city };
     }

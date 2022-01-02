@@ -1,8 +1,14 @@
 import React from 'react';
+
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+
 import { getCitizenNote } from '../../redux/reducers/actions';
 import { useAppDispatch } from '../../hooks';
 
-const CitizenCard = ({ citizen, showNote }: any) => {
+const CitizenCard = ({ citizen }: any) => {
     const { id, name, age, city } = citizen;
     const dispatch = useAppDispatch();
 
@@ -11,14 +17,17 @@ const CitizenCard = ({ citizen, showNote }: any) => {
     }
 
     return (
-        <li>
-            <strong>{name}</strong>
-            <div>
-                Age: {age} <br />
-                City: {city}
-            </div>
-            <button onClick={handleClick}>Show note</button>
-        </li>
+        <ListItem button divider onClick={handleClick}>
+            <ListItemAvatar>
+                <Avatar
+                    sx={{ bgcolor: 'grey' }}
+                    alt={name} 
+                >
+                    {name.charAt(0).toUpperCase()}
+                </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={name} secondary={`${city}, ${age} years old`} />
+        </ListItem>
     )
 };
 

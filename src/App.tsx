@@ -1,37 +1,46 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link
 } from "react-router-dom";
+
+import Container from "@mui/material/Container";
 
 import Home from './pages/Home/Component';
 import AddCitizen from './pages/AddCitizen/Component';
-import { useAppSelector } from './hooks';
+import Header from "./components/Header/Component";
+import { useAppDispatch } from './hooks';
+import { setAccount, getCitizensCount } from './redux/reducers/actions';
 
+const App = () => {
+  const dispatch = useAppDispatch();
 
-const App = () => {  
-  const { account } = useAppSelector((state: any) => state.application);
+  useEffect(() => {
+    const isMetaMask = (window as any).ethereum?.isMetaMask;
+    const isConnected = (window as any).ethereum?.isConnected();
+    const selectedAddress = (window as any).ethereum?.selectedAddress;
+
+    if(!isMetaMask || !isConnected) return;
+
+    dispatch(getCitizensCount());
+    dispatch(setAccount(selectedAddress));
+  }, []);
 
   return (
-    <Router>
-      <div className="app">
-        <header>
-          <nav>
-            <Link to="/">Home</Link> |{" "}
-            <Link to="/add-new-citizen">Add new citizen</Link>
-          </nav>
-          { account }
-        </header>
-        <main className="main">
-            <Routes>
-                <Route path="/" element={ <Home /> } />
-                <Route path="add-new-citizen" element={<AddCitizen />} />
-            </Routes>
-        </main>
-      </div>
-    </Router>
+      <Router>
+        <div className="app">
+          <Header />
+          <Container maxWidth="md">
+            <main className="main">
+                <Routes>
+                    <Route path="/" element={ <Home /> } />
+                    <Route path="add-new-citizen" element={<AddCitizen />} />
+                </Routes>
+            </main>
+          </Container>
+        </div>
+      </Router>
   );
 };
 

@@ -1,26 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-const Pagination = ({ limit, totalPosts }: any) => {
-  const pageNumbers = [];
+import MaterialPagination from '@mui/material/Pagination';
 
-  for (let i = 1; i <= Math.ceil(totalPosts / limit); i++) {
-    pageNumbers.push(i);
-  }
+import './Component.scss';
+
+const Pagination = ({ limit, total, handleChange }: any) => {
+  if (!total) return null;
 
   return (
-    <nav>
-
-        {pageNumbers.map(pageNumber => (
-            <Link
-              key={pageNumber} 
-              to={`?page=${pageNumber}`}
-              className='page-link'>
-              { pageNumber } {' '}
-            </Link>
-        ))}
-
-    </nav>
+    <div className='paginationContainer'>
+      <MaterialPagination count={Math.ceil(total / limit)} onChange={handleChange} />
+    </div>
   );
 };
 

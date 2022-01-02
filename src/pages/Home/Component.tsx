@@ -1,37 +1,25 @@
 import React, { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
-import { getCitizens, clearCitizenNote, setAccount, getCitizensCount } from '../../redux/reducers/actions';
+import Button from '@mui/material/Button';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Alert from '@mui/material/Alert';
+
+import { getCitizens, clearCitizenNote } from '../../redux/reducers/actions';
 import CitizensList from '../../components/CitizensList/Component';
 import Pagination from '../../components/Pagination/Component';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { homeSelector } from './selector';
-import { useLocation } from 'react-router-dom';
-
-function useQuery() {
-    const { search } = useLocation();
-  
-    return React.useMemo(() => new URLSearchParams(search), [search]);
-  }
+import { DEFAULT_PAGE, PAGE_LIMIT } from './constants';
+import './Component.scss';
 
 const Home = () => {
-    const query = useQuery();
-    const dispatch = useAppDispatch();
+    const [ searchParams, setSearchParams ] = useSearchParams({});
     const { citizensCount, citizenNote, account } = useAppSelector(homeSelector);
-
-    const handleConnect = async () => {
-        const provider = 
-            (window as any).ethereum || 
-            (window as any).web3.currentProvider;
-
-        const [ currentAccount ] = await provider.request({
-            method: 'eth_requestAccounts'
-        });
-        const page = query.get('page') || 1;
-
-        dispatch(setAccount(currentAccount));
-        dispatch(getCitizensCount());
-        dispatch(getCitizens({ page, limit: 5 }));
-    };
+    const dispatch = useAppDispatch();
 
     const handleNoteClose = () => {
         dispatch(clearCitizenNote());
@@ -40,28 +28,41 @@ const Home = () => {
     useEffect(() => {
         if (!account) return;
 
-        const page = query.get('page') || 1;
-        dispatch(getCitizens({ page, limit: 5 }));
-    }, [query])
+        const page = searchParams.get('page') || DEFAULT_PAGE;
+        dispatch(getCitizens({ page, limit: PAGE_LIMIT }));
+    }, [searchParams, account])
+
+    const handleChange = (event: any, page: any) => {
+        setSearchParams({ page });
+    };
+
+    if(!account) return (
+        <div className='homeContainer'>
+            <Alert variant="outlined"severity="info">
+                Please connect to MetaMask.
+            </Alert>
+        </div>
+    );
 
     return (
-        <div>
-            <h1>Home</h1>
-            {
-                !account && <button onClick={handleConnect}>Connect to MetaMask</button>
-            }
+        <div className='homeContainer'>
             {
                 citizenNote && (
-                    <blockquote>
-                        { citizenNote } {' '}
-                        <button onClick={handleNoteClose}>Close</button>
-                    </blockquote>
+                    <Dialog onClose={handleNoteClose} open={Boolean(citizenNote)}>
+                        <DialogTitle>View citizen's note</DialogTitle>
+                        <DialogContent>{citizenNote }</DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleNoteClose}>Close</Button>
+                        </DialogActions>
+                    </Dialog>
                 )
             }
             <CitizensList />
-            <Pagination 
-                limit={5}
-                totalPosts={citizensCount}
+            
+            <Pagination
+                limit={PAGE_LIMIT}
+                total={citizensCount}
+                handleChange={handleChange}
             />
         </div>
     )
