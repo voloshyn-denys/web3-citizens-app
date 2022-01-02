@@ -84,4 +84,4 @@ export const CONTACT_ABI = [
 		"stateMutability": "view",
 		"type": "function"
 	}
-]
+];

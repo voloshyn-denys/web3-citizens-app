@@ -1,5 +1,8 @@
 import Web3 from 'web3';
+import { v4 as uuidv4 } from 'uuid';
+
 import { CONTACT_ABI, CONTACT_ADDRESS } from '../constants';
+import { getCitizensIdsToSearch } from './utils';
 
 const NOT_FOUND = 'Not found';
 const WRONG_FORMAT_MESSAGE = 'Decoded with wrong format.'
@@ -12,8 +15,20 @@ const web3 = new Web3(provider);
 const contract = new web3.eth.Contract(CONTACT_ABI as any, CONTACT_ADDRESS);
 
 export const citizensAPI = {
-    fetchCitizens: async () => {
+    getCitizensCount: async () => {
         const events =  await contract.getPastEvents('Citizen', {
+            fromBlock: 0,
+            toBlock: 'latest'
+        });
+
+        return events.length;
+    },
+
+    fetchCitizens: async (page: number, limit: number, count: number) => {
+        const citizenIds = getCitizensIdsToSearch(page, limit, count);
+        
+        const events =  await contract.getPastEvents('Citizen', {
+            filter: {id: citizenIds},
             fromBlock: 0,
             toBlock: 'latest'
         });
@@ -44,5 +59,19 @@ export const citizensAPI = {
 
     fetchNote: async (id: string) => {
         return await contract.methods.getNoteByCitizenId(id).call();
+    },
+
+    addNewCitizen: async (citizen: any) => {
+        const { age, name, city, note } = citizen;
+        const { events } =  await contract.methods
+            .addCitizen(age, city, name, note)
+            .send({ 
+                from: (window as any).ethereum.selectedAddress 
+            });
+        const id = events?.Citizen?.returnValues?.id || uuidv4();
+
+        console.info(id);
+
+        return { id, age, name, city };
     }
 };
