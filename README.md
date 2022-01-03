@@ -31,3 +31,9 @@ https://ropsten.etherscan.io/address/0xb5842e2384f5b6f1dbec5e130c75e82d3803c3d3
 To be able to write some data to the smart contract, you need test ether.
 You can get it from the metamask faucet:
 https://faucet.dimensions.network/
+
+## What next
+Will be added Cloudflare worker deployed https://citizens-worker.denys-voloshyn.workers.dev/
+
+Cloudflare worker source code:
+https://github.com/voloshyn-denys/citizens-worker
