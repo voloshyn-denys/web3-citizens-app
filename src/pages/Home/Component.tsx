@@ -16,7 +16,7 @@ import { homeSelector } from './selector';
 import { DEFAULT_PAGE, PAGE_LIMIT } from './constants';
 import './Component.scss';
 
-const Home = () => {
+const Home: React.FC = () => {
     const [ searchParams, setSearchParams ] = useSearchParams({});
     const { citizensCount, citizenNote, account } = useAppSelector(homeSelector);
     const dispatch = useAppDispatch();

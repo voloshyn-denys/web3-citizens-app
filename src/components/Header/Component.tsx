@@ -12,7 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { getCitizens, setAccount, getCitizensCount } from '../../redux/reducers/actions';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 
-const Header = () => { 
+const Header: React.FC = () => { 
     const [searchParams] = useSearchParams({});
     const { account } = useAppSelector((state: any) => state.application);
     const dispatch = useAppDispatch();

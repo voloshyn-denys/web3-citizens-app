@@ -8,11 +8,10 @@ import Typography from '@mui/material/Typography';
 
 import CitizenCard from '../CitizenCard/Component';
 import { useAppSelector } from '../../hooks';
+import { Citizen } from '../../types'
 import './Component.scss'
 
-type Citizen = { id: string, age: string, name: string, city?: string };
-
-const CitizensList = () => {
+const CitizensList: React.FC = () => {
     const { citizens, pending, error } = useAppSelector((state: any) => state.citizens);
 
     if (pending) return (

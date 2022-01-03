@@ -4,12 +4,20 @@ import MaterialPagination from '@mui/material/Pagination';
 
 import './Component.scss';
 
-const Pagination = ({ limit, total, handleChange }: any) => {
+type PaginationProps = {
+  limit: number, 
+  total: number, 
+  handleChange: () => void,
+}
+
+const Pagination = ({ limit, total, handleChange }: PaginationProps) => {
   if (!total) return null;
+
+  const count = Math.ceil(total / limit);
 
   return (
     <div className='paginationContainer'>
-      <MaterialPagination count={Math.ceil(total / limit)} onChange={handleChange} />
+      <MaterialPagination onChange={handleChange} count={count} />
     </div>
   );
 };

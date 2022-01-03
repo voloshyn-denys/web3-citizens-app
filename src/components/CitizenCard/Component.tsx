@@ -7,8 +7,13 @@ import Avatar from '@mui/material/Avatar';
 
 import { getCitizenNote } from '../../redux/reducers/actions';
 import { useAppDispatch } from '../../hooks';
+import { Citizen } from '../../types';
 
-const CitizenCard = ({ citizen }: any) => {
+type CitizenCardProps = {
+    citizen: Citizen
+};
+
+const CitizenCard = ({ citizen }: CitizenCardProps) => {
     const { id, name, age, city } = citizen;
     const dispatch = useAppDispatch();
 

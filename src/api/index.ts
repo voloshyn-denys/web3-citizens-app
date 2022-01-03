@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { CONTACT_ABI, CONTACT_ADDRESS } from '../constants';
 import { getCitizensIdsToSearch } from './utils';
 
-const NOT_FOUND = 'Not found';
+const NOT_FOUND = 'City not found';
 const WRONG_FORMAT_MESSAGE = 'Decoded with wrong format.'
 
 const provider = 

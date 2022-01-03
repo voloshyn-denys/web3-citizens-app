@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { addNewCitizen } from '../../redux/reducers/actions';
 import './Component.scss'
 
-const AddCitizen = () => {
+const AddCitizen: React.FC = () => {
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const { account } = useAppSelector((state: any) => state.application);
     const dispatch = useAppDispatch();

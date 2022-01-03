@@ -13,7 +13,7 @@ import Header from "./components/Header/Component";
 import { useAppDispatch } from './hooks';
 import { setAccount, getCitizensCount } from './redux/reducers/actions';
 
-const App = () => {
+const App: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
