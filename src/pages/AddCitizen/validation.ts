@@ -3,7 +3,7 @@ import * as yup from 'yup';
 export const validationSchema = yup.object({
     age: yup
       .number()
-      .min(18, 'Too yang. Only adults can be added to the list')
+      .min(18, 'Too young. Only adults can be added to the list')
       .max(150, 'Too old.')
       .required('Age is required'),
     city: yup
