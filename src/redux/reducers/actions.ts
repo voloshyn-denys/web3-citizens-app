@@ -10,44 +10,44 @@ import {
     FETCH_CITIZENS_COUNT
 } from './actionTypes';
 import { Citizen, AddCitizenFormValues } from '../../types';
+import { ActionTypes } from './types'
 
-export const setCitizens = (citizens: Citizen[]) => ({
+export const setCitizens = (citizens: Citizen[]): ActionTypes => ({
     type: FETCH_CITIZENS_SUCCESS,
     citizens
 });
 
-export const setPending = () => ({
+export const setPending = (): ActionTypes => ({
     type: FETCH_CITIZENS_PENDING,
 });
 
-export const setError = () => ({
+export const setError = (): ActionTypes => ({
     type: FETCH_CITIZENS_ERROR,
 });
 
-export const setCitizenNote = (citizenNote: string) => ({
+export const setCitizenNote = (citizenNote: string): ActionTypes => ({
     type: FETCH_NOTE_SUCCESS,
     citizenNote
 });
 
-export const clearCitizenNote = () => ({
+export const clearCitizenNote = (): ActionTypes => ({
     type: CLEAR_CITIZEN_NOTE
 });
 
-export const addNewCitizenAction = (citizen: Citizen) => ({
+export const addNewCitizenAction = (citizen: Citizen): ActionTypes => ({
     type: ADD_NEW_CITIZEN,
     citizen
 })
 
-export const setAccount = (account: string) => ({
+export const setAccount = (account: string): ActionTypes => ({
     type: FETCH_ACCOUNT,
     account
 });
 
-export const setCitizensCount = (citizensCount: number) => ({
+export const setCitizensCount = (citizensCount: number): ActionTypes => ({
     type: FETCH_CITIZENS_COUNT,
     citizensCount
 });
-
 
 export const getCitizensCount = () => async (dispatch: any) => {
     try {

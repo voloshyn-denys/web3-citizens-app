@@ -7,8 +7,9 @@ import {
   ADD_NEW_CITIZEN,
   FETCH_CITIZENS_COUNT
 } from './actionTypes';
+import { ActionTypes, CitizensState } from './types'
 
-const initialState = {
+const initialState: CitizensState = {
     citizens: [],
     pending: false,
     error: false,
@@ -16,7 +17,7 @@ const initialState = {
     citizensCount: 0
 };
 
-export default function(state = initialState, action: any) {
+export default function(state = initialState, action: ActionTypes): CitizensState {
   switch (action.type) {
     case FETCH_CITIZENS_SUCCESS: {
       const citizens = action.citizens.sort((a: any, b: any) => b.id - a.id);
