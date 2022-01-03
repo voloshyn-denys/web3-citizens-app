@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useFormik } from 'formik';
+import { useFormik, FormikProps } from 'formik';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -9,13 +9,15 @@ import Typography from '@mui/material/Typography';
 import { validationSchema } from './validation';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { addNewCitizen } from '../../redux/reducers/actions';
+import { AddCitizenFormValues } from '../../types';
 import './Component.scss'
 
 const AddCitizen: React.FC = () => {
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const { account } = useAppSelector((state: any) => state.application);
     const dispatch = useAppDispatch();
-    const handleSubmit = (formValues: any, { resetForm }: any) => {
+
+    const handleSubmit = (formValues: AddCitizenFormValues, { resetForm }: any): void => {
         dispatch(
             addNewCitizen(formValues)
         );
@@ -23,7 +25,7 @@ const AddCitizen: React.FC = () => {
         resetForm();
     };
 
-    const formik = useFormik({
+    const formik: FormikProps<AddCitizenFormValues> = useFormik({
         initialValues: {
             age: '',
             city: '',
@@ -32,10 +34,8 @@ const AddCitizen: React.FC = () => {
         },
         validationSchema,
         onSubmit: handleSubmit,
-    });
-    
-    const errors = formik.errors as any;
-    const touched = formik.touched as any;
+    });    
+    const { errors, touched } = formik;
 
     if (!account) return (
         <div className='container'>
@@ -63,7 +63,7 @@ const AddCitizen: React.FC = () => {
                         label="Name"
                         value={formik.values.name}
                         onChange={formik.handleChange}
-                        error={touched.name && errors.name}
+                        error={touched.name && Boolean(errors.name)}
                         helperText={touched.name && errors.name}
                     />
                 </div>
@@ -77,7 +77,7 @@ const AddCitizen: React.FC = () => {
                         type="number"
                         value={formik.values.age}
                         onChange={formik.handleChange}
-                        error={touched.age && errors.age}
+                        error={touched.age && Boolean(errors.age)}
                         helperText={touched.age && errors.age}
                     />
                 </div>
@@ -90,7 +90,7 @@ const AddCitizen: React.FC = () => {
                         label="City"
                         value={formik.values.city}
                         onChange={formik.handleChange}
-                        error={touched.city && errors.city}
+                        error={touched.city && Boolean(errors.city)}
                         helperText={touched.city && errors.city}
                     />
                 </div>
@@ -103,7 +103,7 @@ const AddCitizen: React.FC = () => {
                         label="Note"
                         value={formik.values.note}
                         onChange={formik.handleChange}
-                        error={touched.note && errors.note}
+                        error={touched.note && Boolean(errors.note)}
                         helperText={touched.note && errors.note}
                     />
                 </div>

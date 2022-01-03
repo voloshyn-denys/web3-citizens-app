@@ -4,3 +4,10 @@ export type Citizen = {
     name: string, 
     city: string 
 };
+
+export type AddCitizenFormValues = {
+    age: string,
+    city: string,
+    name: string,
+    note: string,
+}

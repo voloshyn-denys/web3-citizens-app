@@ -16,7 +16,7 @@ import { setAccount, getCitizensCount } from './redux/reducers/actions';
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
+  useEffect((): void => {
     const isMetaMask = (window as any).ethereum?.isMetaMask;
     const isConnected = (window as any).ethereum?.isConnected();
     const selectedAddress = (window as any).ethereum?.selectedAddress;

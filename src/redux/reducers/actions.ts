@@ -9,8 +9,9 @@ import {
     FETCH_ACCOUNT,
     FETCH_CITIZENS_COUNT
 } from './actionTypes';
+import { Citizen, AddCitizenFormValues } from '../../types';
 
-export const setCitizens = (citizens: any) => ({
+export const setCitizens = (citizens: Citizen[]) => ({
     type: FETCH_CITIZENS_SUCCESS,
     citizens
 });
@@ -32,7 +33,7 @@ export const clearCitizenNote = () => ({
     type: CLEAR_CITIZEN_NOTE
 });
 
-export const addNewCitizenAction = (citizen: any) => ({
+export const addNewCitizenAction = (citizen: Citizen) => ({
     type: ADD_NEW_CITIZEN,
     citizen
 })
@@ -57,7 +58,7 @@ export const getCitizensCount = () => async (dispatch: any) => {
     }
 }
 
-export const addNewCitizen = (formValues: any) => async (dispatch: any) => {
+export const addNewCitizen = (formValues: AddCitizenFormValues) => async (dispatch: any) => {
     try {
         const citizen = await citizensAPI.addNewCitizen(formValues);
         dispatch(addNewCitizenAction(citizen));
@@ -66,7 +67,7 @@ export const addNewCitizen = (formValues: any) => async (dispatch: any) => {
     }
 };
 
-export const getCitizens = ({ page, limit }: any) => async (dispatch: any) => {
+export const getCitizens = (page: number, limit: number) => async (dispatch: any) => {
     try {
         dispatch(setPending());
 

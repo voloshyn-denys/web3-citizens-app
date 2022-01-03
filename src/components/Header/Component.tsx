@@ -11,13 +11,14 @@ import MenuItem from '@mui/material/MenuItem';
 
 import { getCitizens, setAccount, getCitizensCount } from '../../redux/reducers/actions';
 import { useAppSelector, useAppDispatch } from '../../hooks';
+import { DEFAULT_PAGE, PAGE_LIMIT } from "./constants";
 
 const Header: React.FC = () => { 
     const [searchParams] = useSearchParams({});
     const { account } = useAppSelector((state: any) => state.application);
     const dispatch = useAppDispatch();
 
-    const handleConnect = async () => {
+    const handleConnect = async (): Promise<any> => {
         const provider = 
             (window as any).ethereum || 
             (window as any).web3?.currentProvider;
@@ -25,11 +26,11 @@ const Header: React.FC = () => {
         const [ currentAccount ] = await provider.request({
             method: 'eth_requestAccounts'
         });
-        const page = searchParams.get('page') || 1;
+        const page = searchParams.get('page') || DEFAULT_PAGE;
     
         dispatch(setAccount(currentAccount));
         dispatch(getCitizensCount());
-        dispatch(getCitizens({ page, limit: 5 }));
+        dispatch(getCitizens(Number(page), PAGE_LIMIT));
     };
 
     return (

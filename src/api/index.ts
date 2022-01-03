@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { CONTACT_ABI, CONTACT_ADDRESS } from '../constants';
 import { getCitizensIdsToSearch } from './utils';
+import { Citizen } from '../types';
 
 const NOT_FOUND = 'City not found';
 const WRONG_FORMAT_MESSAGE = 'Decoded with wrong format.'
@@ -15,7 +16,7 @@ const web3 = new Web3(provider);
 const contract = new web3.eth.Contract(CONTACT_ABI as any, CONTACT_ADDRESS);
 
 export const citizensAPI = {
-    getCitizensCount: async () => {
+    getCitizensCount: async (): Promise<number> => {
         const events =  await contract.getPastEvents('Citizen', {
             fromBlock: 0,
             toBlock: 'latest'
@@ -24,7 +25,7 @@ export const citizensAPI = {
         return events.length;
     },
 
-    fetchCitizens: async (page: number, limit: number, count: number) => {
+    fetchCitizens: async (page: number, limit: number, count: number): Promise<Citizen[]> => {
         const citizenIds = getCitizensIdsToSearch(page, limit, count);
         
         const events =  await contract.getPastEvents('Citizen', {
@@ -57,11 +58,11 @@ export const citizensAPI = {
         return await Promise.all(transactionsData);
     },
 
-    fetchNote: async (id: string) => {
+    fetchNote: async (id: string): Promise<string> => {
         return await contract.methods.getNoteByCitizenId(id).call();
     },
 
-    addNewCitizen: async (citizen: any) => {
+    addNewCitizen: async (citizen: any): Promise<Citizen> => {
         const { age, name, city, note } = citizen;
         const { events } =  await contract.methods
             .addCitizen(age, city, name, note)

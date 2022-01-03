@@ -7,7 +7,7 @@ import './Component.scss';
 type PaginationProps = {
   limit: number, 
   total: number, 
-  handleChange: () => void,
+  handleChange: (event: React.ChangeEvent<unknown>, page: number) => void,
 }
 
 const Pagination = ({ limit, total, handleChange }: PaginationProps) => {

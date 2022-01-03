@@ -21,19 +21,19 @@ const Home: React.FC = () => {
     const { citizensCount, citizenNote, account } = useAppSelector(homeSelector);
     const dispatch = useAppDispatch();
 
-    const handleNoteClose = () => {
+    const handleNoteClose = (): void => {
         dispatch(clearCitizenNote());
     };
 
-    useEffect(() => {
+    useEffect((): void => {
         if (!account) return;
 
         const page = searchParams.get('page') || DEFAULT_PAGE;
-        dispatch(getCitizens({ page, limit: PAGE_LIMIT }));
+        dispatch(getCitizens(Number(page) , PAGE_LIMIT));
     }, [searchParams, account])
 
-    const handleChange = (event: any, page: any) => {
-        setSearchParams({ page });
+    const handleChange = (event: React.ChangeEvent<unknown>, page: number): void => {
+        setSearchParams({ page: String(page)});
     };
 
     if(!account) return (
